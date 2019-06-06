@@ -48,8 +48,8 @@ PROJECT := LabCon
 
 OBJECTS += src/filter.o
 OBJECTS += src/main.o
-OBJECTS += src/mcu.o
-OBJECTS += src/nRF24L01P.o
+OBJECTS += src/nrf.o
+OBJECTS += nRF24L01P/nRF24L01P.o
 
  SYS_OBJECTS += mbed/TARGET_NUCLEO_F072RB/TOOLCHAIN_GCC_ARM/PeripheralPins.o
  SYS_OBJECTS += mbed/TARGET_NUCLEO_F072RB/TOOLCHAIN_GCC_ARM/STM32F0xxx_retarget.o
@@ -156,6 +156,7 @@ INCLUDE_PATHS += -I../mbed/TARGET_NUCLEO_F072RB/TOOLCHAIN_GCC_ARM
 INCLUDE_PATHS += -I../mbed/drivers
 INCLUDE_PATHS += -I../mbed/hal
 INCLUDE_PATHS += -I../mbed/platform
+INCLUDE_PATHS += -I../nRF24L01P
 
 LIBRARY_PATHS := -L../mbed/TARGET_NUCLEO_F072RB/TOOLCHAIN_GCC_ARM
 LIBRARIES := -lmbed
@@ -255,7 +256,7 @@ C_FLAGS += -DMBED_ROM_SIZE=0x20000
 C_FLAGS += -DMBED_RAM_START=0x20000000
 C_FLAGS += -DMBED_RAM_SIZE=0x4000
 
-CXX_FLAGS += -std=gnu++98
+CXX_FLAGS += -std=gnu++11
 CXX_FLAGS += -fno-rtti
 CXX_FLAGS += -Wvla
 CXX_FLAGS += -include
@@ -312,11 +313,6 @@ CXX_FLAGS += -DDEVICE_SERIAL=1
 CXX_FLAGS += -DDEVICE_FLASH=1
 CXX_FLAGS += -DMBED_BUILD_TIMESTAMP=1559666888.18
 CXX_FLAGS += -DTARGET_LIKE_CORTEX_M0
-CXX_FLAGS += -include
-CXX_FLAGS += mbed_config.h
-CXX_FLAGS += -std=gnu++98
-CXX_FLAGS += -fno-rtti
-CXX_FLAGS += -Wvla
 CXX_FLAGS += -c
 CXX_FLAGS += -Wall
 CXX_FLAGS += -Wextra
@@ -424,13 +420,10 @@ all: $(PROJECT).bin $(PROJECT).hex size
 $(PROJECT).link_script.ld: $(LINKER_SCRIPT)
 	@$(PREPROC) $< -o $@
 
-
-
 $(PROJECT).elf: $(OBJECTS) $(SYS_OBJECTS) $(PROJECT).link_script.ld
 	+@echo "$(filter %.o, $^)" > .link_options.txt
 	+@echo "link: $(notdir $@)"
 	@$(LD) $(LD_FLAGS) -T $(filter-out %.o, $^) $(LIBRARY_PATHS) --output $@ @.link_options.txt $(LIBRARIES) $(LD_SYS_LIBS)
-
 
 $(PROJECT).bin: $(PROJECT).elf
 	$(ELF2BIN) -O binary $< $@

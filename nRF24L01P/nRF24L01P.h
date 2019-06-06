@@ -43,48 +43,46 @@
 /**
  * Defines
  */
-#define NRF24L01P_TX_PWR_ZERO_DB         0
-#define NRF24L01P_TX_PWR_MINUS_6_DB     -6
-#define NRF24L01P_TX_PWR_MINUS_12_DB   -12
-#define NRF24L01P_TX_PWR_MINUS_18_DB   -18
+#define NRF24L01P_TX_PWR_ZERO_DB 0
+#define NRF24L01P_TX_PWR_MINUS_6_DB -6
+#define NRF24L01P_TX_PWR_MINUS_12_DB -12
+#define NRF24L01P_TX_PWR_MINUS_18_DB -18
 
-#define NRF24L01P_DATARATE_250_KBPS    250
-#define NRF24L01P_DATARATE_1_MBPS     1000
-#define NRF24L01P_DATARATE_2_MBPS     2000
+#define NRF24L01P_DATARATE_250_KBPS 250
+#define NRF24L01P_DATARATE_1_MBPS 1000
+#define NRF24L01P_DATARATE_2_MBPS 2000
 
-#define NRF24L01P_CRC_NONE               0
-#define NRF24L01P_CRC_8_BIT              8
-#define NRF24L01P_CRC_16_BIT            16
+#define NRF24L01P_CRC_NONE 0
+#define NRF24L01P_CRC_8_BIT 8
+#define NRF24L01P_CRC_16_BIT 16
 
-#define NRF24L01P_MIN_RF_FREQUENCY    2400
-#define NRF24L01P_MAX_RF_FREQUENCY    2525
+#define NRF24L01P_MIN_RF_FREQUENCY 2400
+#define NRF24L01P_MAX_RF_FREQUENCY 2525
 
-#define NRF24L01P_PIPE_P0                0
-#define NRF24L01P_PIPE_P1                1
-#define NRF24L01P_PIPE_P2                2
-#define NRF24L01P_PIPE_P3                3
-#define NRF24L01P_PIPE_P4                4
-#define NRF24L01P_PIPE_P5                5
+#define NRF24L01P_PIPE_P0 0
+#define NRF24L01P_PIPE_P1 1
+#define NRF24L01P_PIPE_P2 2
+#define NRF24L01P_PIPE_P3 3
+#define NRF24L01P_PIPE_P4 4
+#define NRF24L01P_PIPE_P5 5
 
 /**
-* Default setup for the nRF24L01+, based on the Sparkfun "Nordic Serial Interface Board"
-*  for evaluation (http://www.sparkfun.com/products/9019)
-*/
-#define DEFAULT_NRF24L01P_ADDRESS       ((unsigned long long) 0xE7E7E7E7E7 )
-#define DEFAULT_NRF24L01P_ADDRESS_WIDTH  5
-#define DEFAULT_NRF24L01P_CRC            NRF24L01P_CRC_NONE
-#define DEFAULT_NRF24L01P_RF_FREQUENCY  (NRF24L01P_MIN_RF_FREQUENCY + 2)
-#define DEFAULT_NRF24L01P_DATARATE       NRF24L01P_DATARATE_1_MBPS
-#define DEFAULT_NRF24L01P_TX_PWR         NRF24L01P_TX_PWR_MINUS_18_DB
-#define DEFAULT_NRF24L01P_TRANSFER_SIZE  3
+ * Default setup for the nRF24L01+, based on the Sparkfun "Nordic Serial Interface Board"
+ *  for evaluation (http://www.sparkfun.com/products/9019)
+ */
+#define DEFAULT_NRF24L01P_ADDRESS ((unsigned long long) 0xE7E7E7E7E7)
+#define DEFAULT_NRF24L01P_ADDRESS_WIDTH 5
+#define DEFAULT_NRF24L01P_CRC NRF24L01P_CRC_NONE
+#define DEFAULT_NRF24L01P_RF_FREQUENCY (NRF24L01P_MIN_RF_FREQUENCY + 2)
+#define DEFAULT_NRF24L01P_DATARATE NRF24L01P_DATARATE_1_MBPS
+#define DEFAULT_NRF24L01P_TX_PWR NRF24L01P_TX_PWR_MINUS_18_DB
+#define DEFAULT_NRF24L01P_TRANSFER_SIZE 3
 
 /**
  * nRF24L01+ Single Chip 2.4GHz Transceiver from Nordic Semiconductor.
  */
 class nRF24L01P {
-
-public:
-
+    public:
     /**
      * Constructor.
      *
@@ -165,7 +163,9 @@ public:
      *  address provided here, and use 2, 3 or 4 bytes from Pipe 1's address.
      *  The width parameter is ignored for Pipes 2..5.
      */
-    void setRxAddress(unsigned long long address = DEFAULT_NRF24L01P_ADDRESS, int width = DEFAULT_NRF24L01P_ADDRESS_WIDTH, int pipe = NRF24L01P_PIPE_P0);
+    void setRxAddress(unsigned long long address = DEFAULT_NRF24L01P_ADDRESS,
+                      int width = DEFAULT_NRF24L01P_ADDRESS_WIDTH,
+                      int pipe = NRF24L01P_PIPE_P0);
 
     void setRxAddress(unsigned long msb_address, unsigned long lsb_address, int width, int pipe = NRF24L01P_PIPE_P0);
 
@@ -178,7 +178,8 @@ public:
      * Note that the address width is shared with the Receive pipes,
      *  so a change to that address width affect transmissions.
      */
-    void setTxAddress(unsigned long long address = DEFAULT_NRF24L01P_ADDRESS, int width = DEFAULT_NRF24L01P_ADDRESS_WIDTH);
+    void setTxAddress(unsigned long long address = DEFAULT_NRF24L01P_ADDRESS,
+                      int width = DEFAULT_NRF24L01P_ADDRESS_WIDTH);
 
     void setTxAddress(unsigned long msb_address, unsigned long lsb_address, int width);
 
@@ -214,7 +215,6 @@ public:
      * @return the size of the transfer, in bytes (1..32).
      */
     int getTransferSize(int pipe = NRF24L01P_PIPE_P0);
-
 
     /**
      * Get the RPD (Received Power Detector) state.
@@ -268,7 +268,7 @@ public:
      * @param count the number of bytes to send (1..32)
      * @return the number of bytes actually written, or -1 for an error
      */
-    int write(int pipe, char *data, int count);
+    int write(int pipe, char* data, int count);
 
     /**
      * Receive data
@@ -278,7 +278,7 @@ public:
      * @param count the number of bytes to receive (1..32)
      * @return the number of bytes actually received, 0 if none are received, or -1 for an error
      */
-    int read(int pipe, char *data, int count);
+    int read(int pipe, char* data, int count);
 
     /**
      * Determine if there is data available to read
@@ -326,8 +326,8 @@ public:
     void flushRx(void);
     void flushTx(void);
     uint8_t getRSSI(void);
-private:
 
+    private:
     /**
      * Get the contents of an addressable register.
      *
@@ -351,15 +351,13 @@ private:
      */
     int getStatusRegister(void);
 
-    SPI         spi_;
-    DigitalOut  nCS_;
-    DigitalOut  ce_;
+    SPI spi_;
+    DigitalOut nCS_;
+    DigitalOut ce_;
     InterruptIn nIRQ_;
 
     int mode;
     bool a_retr_enabled;
-
 };
 
 #endif /* __NRF24L01P_H__ */
-

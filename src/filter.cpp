@@ -1,22 +1,36 @@
-#include "mbed.h"
 #include "filter.h"
+#include "mbed.h"
 
 static const float lim = 0.6f;
-static const float b1[] = { 0.0233702166f, 0.0f, -0.0233702166f};
-static const float b2[] = { 0.0616017234f, 0.0f, -0.0616017234f};
-static const float a1[] = { 1.0f, -1.5339278083f, 0.9532595669f};
-static const float a2[] = { 1.0f, -1.4738801091f, 0.8767965533f};
+static const float b1[] = {0.0233702166f, 0.0f, -0.0233702166f};
+static const float b2[] = {0.0616017234f, 0.0f, -0.0616017234f};
+static const float a1[] = {1.0f, -1.5339278083f, 0.9532595669f};
+static const float a2[] = {1.0f, -1.4738801091f, 0.8767965533f};
+
+namespace LabCon {
 
 Filter::Filter(PinName ain_pin) : ain(ain_pin) {
     this->_det = false;
 }
 
 void Filter::start(void) {
-     this->sample_timer.attach(callback(this, &Filter::process_sample), 0.000125);
+    this->sample_timer.attach(callback(this, &Filter::process_sample), 0.000125);
 }
 
 void Filter::stop(void) {
     this->sample_timer.detach();
+}
+
+bool Filter::detected(bool reset) {
+    if (!this->_det) {
+        return false;
+    }
+
+    if (reset) {
+        this->_det = false;
+    }
+
+    return true;
 }
 
 void Filter::process_sample(void) {
@@ -49,3 +63,5 @@ void Filter::process_sample(void) {
         this->_det = true;
     }
 }
+
+}  // namespace LabCon

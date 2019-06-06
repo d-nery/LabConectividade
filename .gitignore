@@ -82,6 +82,7 @@ dkms.conf
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+!.vscode/c_cpp_properties.json
 
 ### VisualStudioCode Patch ###
 # Ignore all local history of files
