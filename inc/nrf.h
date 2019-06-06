@@ -12,9 +12,11 @@ class NRF {
         size_t size;
 
         rx_buffer_t(size_t size) {
-            data = new uint8_t[size];
+            this->data = new uint8_t[size];
             this->size = size;
         }
+
+        ~rx_buffer_t(void) { delete[] this->data; }
 
         uint8_t& operator[](int i) { return this->data[i]; }
     };
@@ -23,7 +25,7 @@ class NRF {
         BUZINA_DET = 0x00,
     };
 
-    NRF(nRF24L01P& nrf, int transferSize, uint8_t id);
+    NRF(uint8_t id, int transferSize = 3);
 
     void begin(Serial* serial = NULL);
     int transmit(msg_id_t msg_id, uint8_t data);
@@ -31,7 +33,7 @@ class NRF {
     bool readable(void);
 
     private:
-    nRF24L01P& nrf;
+    nRF24L01P nrf;
     int transferSize;
     uint8_t id;
 };

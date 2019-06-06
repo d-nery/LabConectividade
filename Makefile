@@ -49,6 +49,7 @@ PROJECT := LabCon
 OBJECTS += src/filter.o
 OBJECTS += src/main.o
 OBJECTS += src/nrf.o
+OBJECTS += src/fsm.o
 OBJECTS += nRF24L01P/nRF24L01P.o
 
  SYS_OBJECTS += mbed/TARGET_NUCLEO_F072RB/TOOLCHAIN_GCC_ARM/PeripheralPins.o

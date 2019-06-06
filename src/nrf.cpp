@@ -2,10 +2,7 @@
 
 namespace LabCon {
 
-NRF::NRF(nRF24L01P& nrf, int transferSize, uint8_t id) : nrf(nrf), transferSize(transferSize), id(id) {
-    // transferSize must be 3 for now
-    this->transferSize = 3;
-}
+NRF::NRF(uint8_t id, int transferSize) : nrf(PA_7, PA_6, PB_3, PA_9, PC_7, PA_8), transferSize(transferSize), id(id) {}
 
 void NRF::begin(Serial* serial) {
     this->nrf.powerUp();
