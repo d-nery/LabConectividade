@@ -38,6 +38,9 @@ class FSM {
     uint32_t timeout_base_us;
     uint32_t timeout_ts_us;
 
+    uint32_t retries;
+    uint8_t count;
+
     void start_timer(uint32_t t);
     void stop_timer(void);
     void reset_timer(uint32_t t);

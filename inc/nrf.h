@@ -28,7 +28,7 @@ class NRF {
     NRF(uint8_t id, int transferSize = 3);
 
     void begin(Serial* serial = NULL);
-    int transmit(msg_id_t msg_id, uint8_t data);
+    int transmit(msg_id_t msg_id, uint8_t data, Serial* serial = NULL);
     int receive(rx_buffer_t* rxData);
     bool readable(void);
 

@@ -2,7 +2,7 @@
 
 namespace LabCon {
 
-NRF::NRF(uint8_t id, int transferSize) : nrf(PA_7, PA_6, PB_3, PA_9, PC_7, PA_8), transferSize(transferSize), id(id) {}
+NRF::NRF(uint8_t id, int transferSize) : nrf(PA_7, PA_6, PA_5, PA_9, PC_7, PA_8), transferSize(transferSize), id(id) {}
 
 void NRF::begin(Serial* serial) {
     this->nrf.powerUp();
@@ -22,8 +22,12 @@ void NRF::begin(Serial* serial) {
     this->nrf.enable();
 }
 
-int NRF::transmit(msg_id_t msg_id, uint8_t data) {
+int NRF::transmit(msg_id_t msg_id, uint8_t data, Serial* serial) {
     uint8_t transferData[] = {this->id, uint8_t(msg_id), data};
+
+    if (serial != NULL) {
+        serial->printf("[NRF] Transmiting [ 0x%02X, 0x%02X, 0x%02X ]\r\n", transferData[0], transferData[1], transferData[2]);
+    }
 
     this->nrf.flushRx();
     return this->nrf.write(NRF24L01P_PIPE_P0, (char*) (transferData), this->transferSize);

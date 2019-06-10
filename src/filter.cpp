@@ -7,6 +7,8 @@ static const float b2[] = {0.0616017234f, 0.0f, -0.0616017234f};
 static const float a1[] = {1.0f, -1.5339278083f, 0.9532595669f};
 static const float a2[] = {1.0f, -1.4738801091f, 0.8767965533f};
 
+// static DigitalOut led(LED1);
+
 namespace LabCon {
 
 Filter::Filter(PinName ain_pin) : ain(ain_pin) {
@@ -14,11 +16,12 @@ Filter::Filter(PinName ain_pin) : ain(ain_pin) {
 }
 
 void Filter::start(void) {
-    this->sample_timer.attach(callback(this, &Filter::process_sample), 0.000125);
+    this->sample_timer.attach_us(callback(this, &Filter::process_sample), 150);
 }
 
 void Filter::stop(void) {
     this->sample_timer.detach();
+    wait_ms(1);
 }
 
 bool Filter::detected(bool reset) {
@@ -27,6 +30,7 @@ bool Filter::detected(bool reset) {
     }
 
     if (reset) {
+        // led = 0;
         this->_det = false;
     }
 
@@ -54,12 +58,13 @@ void Filter::process_sample(void) {
 
     // Comparacao com limiar
     py1[1] = py1[0];
-    py1[0] = 0.001f * y1[0] * y1[0] + 0.999f * py1[1];
+    py1[0] = float(0.001f) * y1[0] * y1[0] + float(0.999f) * py1[1];
 
     py2[1] = py2[0];
-    py2[0] = 0.001f * y2[0] * y2[0] + 0.999f * py2[1];
+    py2[0] = float(0.001f) * y2[0] * y2[0] + float(0.999f) * py2[1];
 
     if (py1[0] > (lim * py2[0])) {
+        // led = 1;
         this->_det = true;
     }
 }
